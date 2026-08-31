@@ -10,7 +10,7 @@ This is an Antigravity agent skill designed to help users generate a specific sk
    ```
 2. Clone this repository into a directory named `book-skill-builder`:
    ```bash
-   git clone <your-repo-url> book-skill-builder
+   git clone https://github.com/benkuotw/book-skill-builder.git
    ```
 3. Install the required Python dependencies in your workspace's virtual environment:
    ```bash

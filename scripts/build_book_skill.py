@@ -27,9 +27,19 @@ def create_skill(pdf_path, skill_name):
     if toc:
         print("Found Table of Contents. Extracting chapters...")
         # toc format: [level, title, page_number]
-        # Take level 1 and 2 to avoid making too many tiny files
-        filtered_toc = [item for item in toc if item[0] <= 2]
-        
+        # Take level 1 and 2 to avoid making too many tiny files, in page order.
+        # Some PDFs end their TOC with an entry pointing back to an earlier page
+        # (e.g. "Blank Page" on page 1). Keeping it would copy the whole book into
+        # one file and cut the chapter before it down to a single page.
+        filtered_toc = []
+        for item in toc:
+            if item[0] > 2 or not 1 <= item[2] <= doc.page_count:
+                continue
+            if filtered_toc and item[2] < filtered_toc[-1][2]:
+                print(f"Skipping out-of-order TOC entry: {item[1].strip()!r} (page {item[2]})")
+                continue
+            filtered_toc.append(item)
+
         for i, item in enumerate(filtered_toc):
             title = item[1].strip()
             start_page = item[2] - 1  # 0-indexed in PyMuPDF

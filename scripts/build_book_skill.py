@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
+import argparse
 import sys
 import os
 import fitz  # PyMuPDF
 import re
 
-def create_skill(pdf_path, skill_name):
+# The skills folder this builder is installed in (the parent of book-skill-builder/).
+# New skills go next to the builder, so they land wherever the agent reads skills:
+# ~/.claude/skills for Claude Code, .agents/skills for Antigravity, and so on.
+DEFAULT_SKILLS_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+
+def create_skill(pdf_path, skill_name, skills_dir=DEFAULT_SKILLS_DIR):
     if not os.path.exists(pdf_path):
         print(f"Error: PDF file '{pdf_path}' not found.")
         sys.exit(1)
-        
-    # Determine workspace root (where .agents lives)
-    # The script is in .agents/skills/book-skill-builder/scripts/
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    workspace_root = os.path.abspath(os.path.join(script_dir, "../../../.."))
-    skill_dir = os.path.join(workspace_root, ".agents", "skills", skill_name)
+
+    skill_dir = os.path.join(skills_dir, skill_name)
     refs_dir = os.path.join(skill_dir, "references")
     
     os.makedirs(refs_dir, exist_ok=True)
@@ -99,14 +101,14 @@ def create_skill(pdf_path, skill_name):
     skill_content = f"""---
 name: {skill_name}
 description: >-
-  Use this skill when the user asks questions or needs help implementing concepts 
-  from {book_title}. It contains reference material, best practices, and patterns 
+  Use this skill when the user asks questions or needs help implementing concepts
+  from {book_title}. It contains reference material, best practices, and patterns
   from the book.
 ---
 
 # {book_title} Knowledge Base
 
-You have access to the contents of {book_title}. When the user asks a question related to these topics, find the most relevant chapter below and use the `view_file` tool to read it before answering or implementing.
+You have access to the contents of {book_title}. When the user asks a question related to these topics, find the most relevant chapter below and read its file before answering or implementing.
 
 ## Index / Table of Contents
 
@@ -124,10 +126,10 @@ You have access to the contents of {book_title}. When the user asks a question r
     print(f"Skill located at: {skill_dir}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python build_book_skill.py <path_to_pdf> <desired_skill_name>")
-        sys.exit(1)
-        
-    pdf_path = sys.argv[1]
-    skill_name = sys.argv[2]
-    create_skill(pdf_path, skill_name)
+    parser = argparse.ArgumentParser(description="Turn a PDF book into an agent skill.")
+    parser.add_argument("pdf_path", help="path to the PDF book")
+    parser.add_argument("skill_name", help="name of the new skill (also its folder name)")
+    parser.add_argument("--out", default=DEFAULT_SKILLS_DIR,
+                        help=f"skills folder to create the skill in (default: {DEFAULT_SKILLS_DIR})")
+    args = parser.parse_args()
+    create_skill(args.pdf_path, args.skill_name, os.path.abspath(os.path.expanduser(args.out)))

@@ -1,1 +1,1 @@
-PyMuPDF
+pypdfium2>=5.15.1

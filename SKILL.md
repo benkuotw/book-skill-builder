@@ -20,7 +20,7 @@ This skill creates a new agent skill from a PDF book. It splits the book's text 
 
    The new skill is created next to this one, in the same skills folder, so the agent can use it right away. Add `--out <skills_folder>` only if the user wants it somewhere else.
 
-   *Note: The script needs `PyMuPDF` (see `requirements.txt`). If the import fails, install it with `pip install -r requirements.txt`.*
+   *Note: The script needs `pypdfium2` (see `requirements.txt`). If the import fails, install it with `pip install -r requirements.txt`.*
 
 3. The script prints the path of the new skill, and warns about any table-of-contents entries it skipped.
 4. Confirm with the user that the skill has been created successfully. Tell them it can be used in new conversations (some agents only load skills when a conversation starts).

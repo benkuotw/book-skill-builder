@@ -46,3 +46,7 @@ python3 scripts/build_book_skill.py /path/to/my-book.pdf my-book
 ```
 
 Add `--out <folder>` to create the skill in a different skills folder.
+
+## Dependencies
+
+The script reads PDFs with [pypdfium2](https://github.com/pypdfium2-team/pypdfium2), the Python binding for Chrome's PDF engine (PDFium). pypdfium2 is licensed Apache-2.0 / BSD-3-Clause, and PDFium under a BSD-style license, so the whole tool can be used under this repository's MIT license.

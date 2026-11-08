@@ -12,15 +12,15 @@ This skill creates a new agent skill from a PDF book. It splits the book's text 
 ## Steps to build a skill from a book:
 
 1. Ensure you have the path to the user's PDF book. If not, ask the user for the absolute path.
-2. Run the helper script from this skill's folder (the folder containing this `SKILL.md`):
+2. Run the helper script from this skill's folder (the folder containing this `SKILL.md`). If `uv` is installed, use it, because it installs the script's dependency automatically:
 
    ```bash
-   python3 scripts/build_book_skill.py <path_to_pdf> <desired_skill_name>
+   uv run scripts/build_book_skill.py <path_to_pdf> <desired_skill_name>
    ```
 
    The new skill is created next to this one, in the same skills folder, so the agent can use it right away. Add `--out <skills_folder>` only if the user wants it somewhere else.
 
-   *Note: The script needs `pypdfium2` (see `requirements.txt`). If the import fails, install it with `pip install -r requirements.txt`.*
+   *Note: Without `uv`, run `python3 scripts/build_book_skill.py` with the same arguments. It needs `pypdfium2` (see `requirements.txt`); if the import fails, install it into a virtual environment with `pip install -r requirements.txt`.*
 
 3. The script prints the path of the new skill, and warns about any table-of-contents entries it skipped.
 4. Confirm with the user that the skill has been created successfully. Tell them it can be used in new conversations (some agents only load skills when a conversation starts).

@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "pypdfium2>=5.15.1",
+# ]
+# ///
 import argparse
 import sys
 import os

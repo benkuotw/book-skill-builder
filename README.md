@@ -25,7 +25,9 @@ It works with any agent that reads `SKILL.md` skills, including Claude Code and 
    git clone https://github.com/benkuotw/book-skill-builder.git
    ```
 
-3. Install the Python dependency (use a virtual environment if you prefer):
+3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/). The script declares its own dependency, so `uv run` installs it the first time the script runs.
+
+   Without uv, install the dependency into a virtual environment instead:
 
    ```bash
    pip install -r book-skill-builder/requirements.txt
@@ -42,7 +44,11 @@ Ask your agent to build a skill for a book:
 You can also run the script yourself:
 
 ```bash
-python3 scripts/build_book_skill.py /path/to/my-book.pdf my-book
+uv run scripts/build_book_skill.py /path/to/my-book.pdf my-book
 ```
 
-Add `--out <folder>` to create the skill in a different skills folder.
+Without uv, use `python3` instead of `uv run`. Add `--out <folder>` to create the skill in a different skills folder.
+
+## Dependencies
+
+The script reads PDFs with [pypdfium2](https://github.com/pypdfium2-team/pypdfium2), the Python binding for Chrome's PDF engine (PDFium). pypdfium2 is licensed Apache-2.0 / BSD-3-Clause, and PDFium under a BSD-style license, so the whole tool can be used under this repository's MIT license.

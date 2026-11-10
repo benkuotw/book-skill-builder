@@ -47,7 +47,21 @@ You can also run the script yourself:
 uv run scripts/build_book_skill.py /path/to/my-book.pdf my-book
 ```
 
-Without uv, use `python3` instead of `uv run`. Add `--out <folder>` to create the skill in a different skills folder.
+To combine a series into one skill, list the PDFs in reading order:
+
+```bash
+uv run scripts/build_book_skill.py book1.pdf book2.pdf book3.pdf my-series --title "My Series"
+```
+
+Without uv, use `python3` instead of `uv run`.
+
+| Option | What it does |
+| --- | --- |
+| `--out <folder>` | Create the skill in a different skills folder. |
+| `--depth auto` (default) | Split on the top 2 table-of-contents levels, going deeper (up to 4) while any section is longer than 50 pages, so chapters nested under Parts get their own files. |
+| `--depth N` | Split on exactly the top N table-of-contents levels. |
+| `--title <name>` | Name for the book or series in the generated `SKILL.md` (default: the PDF file names). |
+| `--force` | Rebuild a skill that already exists. |
 
 ## Dependencies
 
